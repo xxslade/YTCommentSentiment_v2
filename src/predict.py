@@ -54,6 +54,7 @@ class CommentPredictor:
 if __name__ == "__main__":
     predictor = CommentPredictor()
 
+    #this is the testing comment
     comment = "This is an amazing video! Keep up the great work."
 
     results = predictor.predict(comment)
