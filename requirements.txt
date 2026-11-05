@@ -1,0 +1,9 @@
+torch
+transformers
+pandas
+numpy
+scikit-learn
+iterative-stratification
+matplotlib
+google-api-python-client
+python-dotenv
