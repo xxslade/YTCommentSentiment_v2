@@ -55,6 +55,7 @@ def prepareData(xTrain, yTrain, xVal, yVal, xTest, yTest,
     valDataset = CommentDataset(valEncodings, yVal)
     testDataset = CommentDataset(testEncodings, yTest)
 
+    #finally creating the dataloader that will be input to our model    
     trainLoader = DataLoader(
         trainDataset, batch_size=batchSize, shuffle=True
     )

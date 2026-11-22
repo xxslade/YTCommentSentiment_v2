@@ -5,11 +5,15 @@ from transformers import AutoTokenizer
 from transformers import AutoModelForSequenceClassification
 from model import loadModel
 
+#we will define our own class that loads the model
+#and predicts for a single comment
 class CommentPredictor:
     def __init__(self, modelDir="outputs/finalModel"):
         self.device = torch.device("cpu")
 
+        #store tokenizer
         self.tokenizer = AutoTokenizer.from_pretrained(modelDir)
+        #store the model
         self.model = AutoModelForSequenceClassification.from_pretrained(
             modelDir
         )
@@ -22,6 +26,8 @@ class CommentPredictor:
 
         self.labels = list(self.thresholds.keys())
     def predict(self, comment):
+
+        #first get the encoding of the comment
         encoding = self.tokenizer(
             comment,
             truncation=True,
@@ -30,6 +36,7 @@ class CommentPredictor:
             return_tensors="pt"
         )
 
+        #getting the ids and masks
         inputIds = encoding["input_ids"].to(self.device)
         attentionMask = encoding["attention_mask"].to(self.device)
 
@@ -39,10 +46,12 @@ class CommentPredictor:
                 attention_mask=attentionMask
             )
 
+        #converting to probabilities (same as we did in modelTraining.ipynb)
         probabilities = torch.sigmoid(outputs.logits)[0].numpy()
 
         predictions = {}
 
+        #if probabilty of a certain label is higher that the corresponding threshold, then we append it as a prediction
         for i, label in enumerate(self.labels):
             predictions[label] = {
                 "probability": float(probabilities[i]),
@@ -62,6 +71,7 @@ if __name__ == "__main__":
     print("\nComment:", comment)
     print("\nPredictions:")
 
+    #we finally print the labels
     for label, result in results.items():
         print(
             f"{label}: Probability={result['probability']:.4f}, "

@@ -29,6 +29,7 @@ def extractVideoId(videoUrl):
 
     return None
 
+#function which does the API call
 def fetchComments(videoId, maxComments=500):
     youtube = createYouTubeClient()
 
@@ -62,9 +63,10 @@ def fetchComments(videoId, maxComments=500):
 
     return comments
 
+#sample try out
 if __name__ == "__main__":
     videoUrl = "https://www.youtube.com/watch?v=-7nfEMjaM1M&list=RDEFLJiV7yOBU&index=16"
-    
+
     videoId = extractVideoId(videoUrl)
 
     comments = fetchComments(videoId, maxComments=20)

@@ -2,18 +2,21 @@ from youtubeApi import extractVideoId, fetchComments
 from predict import CommentPredictor
 import matplotlib.pyplot as plt
 
+#fetching comments from youtube
 def analyzeVideo(videoUrl, maxComments=100):
     videoId = extractVideoId(videoUrl)
 
     if not videoId:
         raise ValueError("Invalid YouTube video URL.")
 
+    #using the API key, to fetch all the comments from a URL
     comments = fetchComments(videoId, maxComments)
 
     if not comments:
         print("No comments found.")
         return []
 
+    #the class we defined in predict.py
     predictor = CommentPredictor()
 
     results = []
@@ -28,6 +31,7 @@ def analyzeVideo(videoUrl, maxComments=100):
 
     return results
 
+#counting number of labels for all comments
 def summarizeResults(results):
     totalComments = len(results)
 
@@ -56,6 +60,7 @@ def summarizeResults(results):
 
     return summary
 
+#using matplotlib to draw plot
 def plotSummary(summary):
     labels = list(summary.keys())
     counts = [stats["count"] for stats in summary.values()]
@@ -72,6 +77,8 @@ def plotSummary(summary):
     plt.show()
 
 if __name__ == "__main__":
+
+    #URL TO BE REPLACED FROM HERE!
     videoUrl = "https://www.youtube.com/watch?v=EYkbg444H8A"
 
     results = analyzeVideo(videoUrl, maxComments=20)
